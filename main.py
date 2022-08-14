@@ -1,10 +1,11 @@
-import requests
+from StockPriceChange import *
 
 STOCK = "TSLA"
 COMPANY_NAME = "Tesla Inc"
 
-
-request = abc
+tesla_alert = StockPriceChange (STOCK)
+if tesla_alert.check_change():
+    print("Get News")
 
 ## STEP 1: Use https://www.alphavantage.co
 # When STOCK price increase/decreases by 5% between yesterday and the day before yesterday then print("Get News").
