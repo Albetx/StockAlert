@@ -3,6 +3,7 @@ from datetime import date
 
 ALPHA_ADVANTAGE_API = "OFM3P9Z6AXF7NAXX"
 
+
 class StockPriceChange:
 
     def __init__(self, ticker_symbol):
@@ -35,5 +36,3 @@ class StockPriceChange:
             print((before_yesterday_close/yesterdey_close-1)*100)
             if (before_yesterday_close/yesterdey_close-1)*100 > 5 or (before_yesterday_close/yesterdey_close-1)*100 < -5 :
                 return True
-
-
