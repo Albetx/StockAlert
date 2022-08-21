@@ -1,31 +1,21 @@
-from StockPriceChange import *
-from News import *
+from Tracking import *
+from TrackingInvest import *
+import pandas
+from datetime import datetime
 
 STOCK = "TSLA"
-COMPANY_NAME = "Tesla Inc"
-
-tesla_alert = StockPriceChange (STOCK)
-if tesla_alert.check_change():
-    print("Get News")
-
-news = News (STOCK)
-tsla_news = news.get_news()
-print (tsla_news[0])
+NO_SIG_CHANGE = -999
 
 
+try:
+    with open("tickers.txt") as tickers_list:
+        tickers = pandas.read_csv(tickers_list)
+        tickers_list = tickers[tickers["Group"] == "Invest"]["Ticker"].values
 
-## STEP 3: Use https://www.twilio.com
-# Send a seperate message with the percentage change and each article's title and description to your phone number. 
+except FileNotFoundError:
+    print ("No ticker file found..")
 
-
-#Optional: Format the SMS message like this: 
-"""
-TSLA: 🔺2%
-Headline: Were Hedge Funds Right About Piling Into Tesla Inc. (TSLA)?. 
-Brief: We at Insider Monkey have gone over 821 13F filings that hedge funds and prominent investors are required to file by the SEC The 13F filings show the funds' and investors' portfolio positions as of March 31st, near the height of the coronavirus market crash.
-or
-"TSLA: 🔻5%
-Headline: Were Hedge Funds Right About Piling Into Tesla Inc. (TSLA)?. 
-Brief: We at Insider Monkey have gone over 821 13F filings that hedge funds and prominent investors are required to file by the SEC The 13F filings show the funds' and investors' portfolio positions as of March 31st, near the height of the coronavirus market crash.
-"""
+else:
+    t1 = TrackingInvest("TSLA")
+    t1.check_changes()
 

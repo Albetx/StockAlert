@@ -1,0 +1,4 @@
+Ticker,Group
+"TSLA","Track"
+"AAPL","Invest"
+"GOOG","Invest"
