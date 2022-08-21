@@ -19,3 +19,5 @@ else:
     t1 = TrackingInvest("TSLA")
     t1.check_changes()
 
+# TODO: Test every ticker from the file for updates
+# TODO: Add UI

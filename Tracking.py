@@ -10,6 +10,10 @@ NUMBER_OF_ARTICLES = 3
 TRADE_OPEN_HOUR = 17
 TRADE_CLOSE_HOUR = 23
 MY_EMAIL = "Albetx@gmail.com"
+DRAMATIC_CHANGE_CODE = 100
+DAILY_UPDATE_CODE = 200
+MONTHLY_UPDATE_CODE = 300
+YEARLY_UPDATE_CODE = 400
 
 
 class Tracking:
@@ -32,7 +36,7 @@ class Tracking:
 
         if change != NO_SIG_CHANGE:
             articles = self.news.get_news(NUMBER_OF_ARTICLES)
-            self.sender.send_dramatic_change_mail(articles, change)
+            self.sender.send(articles, change, DRAMATIC_CHANGE_CODE)
 
 
     def periodic_update(self):
@@ -42,6 +46,9 @@ class Tracking:
         if self.daily_update and date_time.minute == 0 and TRADE_OPEN_HOUR < date_time.hour < TRADE_CLOSE_HOUR:
             articles = self.news.get_news(NUMBER_OF_ARTICLES)
 
+
+
+        # TODO: Add periodic update for monthly and yearly updates
 
 
 
