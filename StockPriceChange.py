@@ -1,8 +1,8 @@
 import requests
-from datetime import date
+from datetime import datetime, timedelta
 
 ALPHA_ADVANTAGE_API = "OFM3P9Z6AXF7NAXX"
-NO_SIG_CHANGE = -999
+ERROR1_BAD_TRADING_ADDRESS = -999
 
 
 class StockPriceChange:
@@ -11,7 +11,7 @@ class StockPriceChange:
         self.ticker = ticker_symbol
 
 
-    def check_change(self, change_percent):
+    def check_change(self):
 
         parameters = {
             "function": "TIME_SERIES_DAILY",
@@ -22,21 +22,26 @@ class StockPriceChange:
         response = requests.get("https://www.alphavantage.co/query", params=parameters);
         response.raise_for_status()
         data = response.json()
-        yesterday = date(date.today().year,date.today().month,date.today().day-3)
-        before_yesterday = date(date.today().year,date.today().month,date.today().day-4)
+
+        # Skip off-market days of the week
+        last_trading_date = datetime.today() - timedelta(days=1)
+        while last_trading_date.weekday() == 5 or last_trading_date.weekday() == 6:
+            last_trading_date -= timedelta(days=1)
+
+        before_last_trading_date = datetime.today() - timedelta(days=2)
+        while before_last_trading_date.weekday() == 5 or before_last_trading_date.weekday() == 6 or \
+                before_last_trading_date.weekday() == last_trading_date.weekday():
+            before_last_trading_date -= timedelta(days=1)
 
         try:
-            yesterdey_close = float (data["Time Series (Daily)"][yesterday.strftime('%Y-%m-%d')]['4. close'])
-            before_yesterday_close = float (data["Time Series (Daily)"][before_yesterday.strftime('%Y-%m-%d')]['4. close'])
+            last_close = float (data["Time Series (Daily)"][last_trading_date.strftime('%Y-%m-%d')]['4. close'])
+            before_last_close = float (data["Time Series (Daily)"][before_last_trading_date.strftime('%Y-%m-%d')]['4. close'])
 
         except KeyError:
-            print("Bad trading address..")
-            return NO_SIG_CHANGE
+            return ERROR1_BAD_TRADING_ADDRESS
 
         else:
-            change = (before_yesterday_close/yesterdey_close-1)*100
+            change = (last_close / before_last_close - 1) * 100
             print(change)
-            if change > abs(change_percent) or change < -abs(change_percent):
-                return change
-            else:
-                return NO_SIG_CHANGE
+
+            return change
