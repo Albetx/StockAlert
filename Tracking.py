@@ -5,7 +5,7 @@ from datetime import datetime
 from SendEmail import *
 
 DRAMATIC_CHANGE_PERCENT = 5
-NO_SIG_CHANGE = -999
+ERROR1_BAD_TRADING_ADDRESS = -999
 NUMBER_OF_ARTICLES = 3
 TRADE_OPEN_HOUR = 17
 TRADE_CLOSE_HOUR = 23
@@ -26,16 +26,19 @@ class Tracking:
         self.yearly_update = True
         self.news = News(self.ticker)
         self.sender = SendEmail(MY_EMAIL, self.ticker)
+        self.spc = StockPriceChange(self.ticker)
 
     # Checks if there is a dramatic change (depending on the attribute) in the stock,
     # If yes: get the last NUMBER_OF_ARTICLES and send it by mail
     # Else: Do nothing
     def check_changes(self):
-        spc = StockPriceChange(self.ticker)
-        change = spc.check_change(self.dramatic_change)
+        change = self.spc.check_change(DRAMATIC_CHANGE_CODE)
 
-        if change != NO_SIG_CHANGE:
-            articles = self.news.get_news(NUMBER_OF_ARTICLES)
+        if change == ERROR1_BAD_TRADING_ADDRESS:
+            print("Bad trading address..")
+
+        elif change > abs(self.dramatic_change) or change < -abs(self.dramatic_change):
+            articles = self.news.get_news(NUMBER_OF_ARTICLES, DRAMATIC_CHANGE_CODE)
             self.sender.send(articles, change, DRAMATIC_CHANGE_CODE)
 
 
@@ -43,12 +46,23 @@ class Tracking:
 
         date_time = datetime.now()
 
+        # Daily Update
         if self.daily_update and date_time.minute == 0 and TRADE_OPEN_HOUR < date_time.hour < TRADE_CLOSE_HOUR:
-            articles = self.news.get_news(NUMBER_OF_ARTICLES)
+            change = self.spc.check_change(DAILY_UPDATE_CODE)
+            articles = self.news.get_news(NUMBER_OF_ARTICLES, DAILY_UPDATE_CODE)
+            self.sender.send(articles, change, DAILY_UPDATE_CODE)
 
+        # Monthly Update
+        if self.monthly_update and date_time.day == 1:
+            change = self.spc.check_change(MONTHLY_UPDATE_CODE)
+            articles = self.news.get_news(NUMBER_OF_ARTICLES, MONTHLY_UPDATE_CODE)
+            self.sender.send(articles, change, MONTHLY_UPDATE_CODE)
 
-
-        # TODO: Add periodic update for monthly and yearly updates
+        # Yearly Update
+        if self.yearly_update and date_time.month == 1 and date_time.day == 1:
+            change = self.spc.check_change(YEARLY_UPDATE_CODE)
+            articles = self.news.get_news(NUMBER_OF_ARTICLES, YEARLY_UPDATE_CODE)
+            self.sender.send(articles, change, YEARLY_UPDATE_CODE)
 
 
 
