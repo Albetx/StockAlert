@@ -1,7 +1,8 @@
 import smtplib
+import os
 
-my_email = "testserver.con@outlook.com"
-password = "Dovnemalim1"
+my_email = os.environ.get("EMAIL_ADD")
+password = os.environ.get("EMAIL_PASS")
 DRAMATIC_CHANGE_CODE = 100
 DAILY_UPDATE_CODE = 200
 MONTHLY_UPDATE_CODE = 300
