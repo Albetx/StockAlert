@@ -1,29 +1,42 @@
-import requests
+from Tracking import *
+from TrackingInvest import *
+from TrackingTrade import *
+import pandas
+import UserInterface as userI
 
 STOCK = "TSLA"
-COMPANY_NAME = "Tesla Inc"
+NO_SIG_CHANGE = -999
 
 
-request = 
+try:
+    with open("tickers.txt") as tickers_list:
+        tickers_table = pandas.read_csv(tickers_list)
+        tickers_list = tickers_table["Ticker"].values
+        tickers_list_Invest = tickers_table[tickers_table["Group"] == "Invest"]["Ticker"].values
+        tickers_list_Trade = tickers_table[tickers_table["Group"] == "Trade"]["Ticker"].values
+        tickers_list_Track = tickers_table[tickers_table["Group"] == "Track"]["Ticker"].values
 
-## STEP 1: Use https://www.alphavantage.co
-# When STOCK price increase/decreases by 5% between yesterday and the day before yesterday then print("Get News").
+except FileNotFoundError:
+    print("No ticker file found..")
 
-## STEP 2: Use https://newsapi.org
-# Instead of printing ("Get News"), actually get the first 3 news pieces for the COMPANY_NAME. 
+else:
 
-## STEP 3: Use https://www.twilio.com
-# Send a seperate message with the percentage change and each article's title and description to your phone number. 
+    # Invest group
+    for ticker in tickers_list_Invest:
+        t1 = TrackingInvest(ticker)
+        t1.check_changes()
+        t1.periodic_update()
+    # Trade group
+    for ticker in tickers_list_Trade:
+        t1 = TrackingTrade(ticker)
+        t1.check_changes()
+        t1.periodic_update()
+    # Track group
+    for ticker in tickers_list_Track:
+        t1 = Tracking(ticker)
+        t1.check_changes()
+        t1.periodic_update()
 
+    userI.UserInterface(tickers_table)
 
-#Optional: Format the SMS message like this: 
-"""
-TSLA: 🔺2%
-Headline: Were Hedge Funds Right About Piling Into Tesla Inc. (TSLA)?. 
-Brief: We at Insider Monkey have gone over 821 13F filings that hedge funds and prominent investors are required to file by the SEC The 13F filings show the funds' and investors' portfolio positions as of March 31st, near the height of the coronavirus market crash.
-or
-"TSLA: 🔻5%
-Headline: Were Hedge Funds Right About Piling Into Tesla Inc. (TSLA)?. 
-Brief: We at Insider Monkey have gone over 821 13F filings that hedge funds and prominent investors are required to file by the SEC The 13F filings show the funds' and investors' portfolio positions as of March 31st, near the height of the coronavirus market crash.
-"""
 

@@ -1,0 +1,4 @@
+Ticker,Group
+AAPL,Invest
+GOOG,Invest
+ZIM,Trade
