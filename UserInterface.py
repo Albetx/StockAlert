@@ -5,6 +5,7 @@ from pandas import *
 
 GROUPS = ("Invest", "Trade", "Track")
 BACKGROUND_COLOR = "#7871ee"
+WINDOW_TIMEOUT = 300000
 
 class UserInterface:
 
@@ -26,7 +27,7 @@ class UserInterface:
         stocks_label.grid(row=1, column=3)
 
         tickers = StringVar()
-        self.tickers_box = ttk.Combobox(textvariable=tickers)
+        self.tickers_box = ttk.Combobox(textvariable=tickers, width=14)
         self.tickers_box['values'] = tuple(self.tickers_list)
         self.tickers_box.grid(row=1, column=4)
 
@@ -39,12 +40,12 @@ class UserInterface:
         add_stock_label = Label(text="Add new stock symbol: ", font=('Neue', 12, "bold"), bg=BACKGROUND_COLOR, fg="White")
         add_stock_label.grid(row=2, column=3, rowspan=2)
 
-        self.new_stock = Entry(width=23)
+        self.new_stock = Entry(width=17)
         self.new_stock.insert(END, "Type a Ticker Symbol")
         self.new_stock.grid(row=2, column=4, pady=5)
 
         groups = StringVar()
-        self.groups_box = ttk.Combobox(textvariable=groups, width=20)
+        self.groups_box = ttk.Combobox(textvariable=groups, width=14)
         self.groups_box['values'] = GROUPS
         self.groups_box.grid(row=3, column=4)
 
@@ -59,6 +60,7 @@ class UserInterface:
                              borderwidth=0, command=self.save_changes)
         save_button.grid(row=4, column=0, columnspan=9, pady=20)
 
+        self.window.after(WINDOW_TIMEOUT, lambda: self.window.destroy())
         self.window.mainloop()
 
     def remove_stock_from_list (self):

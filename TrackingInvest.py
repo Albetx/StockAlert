@@ -1,6 +1,6 @@
 from Tracking import *
 
-DRAMATIC_CHANGE_PERCENT = 0.1
+DRAMATIC_CHANGE_PERCENT = 10.0
 
 
 class TrackingInvest(Tracking):

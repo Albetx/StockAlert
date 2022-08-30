@@ -1,4 +1,4 @@
-Ticker,Group
-"TSLA","Track"
-"AAPL","Invest"
-"GOOG","Invest"
+Ticker,Group
+AAPL,Invest
+GOOG,Invest
+ZIM,Trade

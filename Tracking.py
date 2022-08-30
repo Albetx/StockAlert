@@ -4,7 +4,7 @@ from datetime import date
 from datetime import datetime
 from SendEmail import *
 
-DRAMATIC_CHANGE_PERCENT = 5
+DRAMATIC_CHANGE_PERCENT = 5.0
 ERROR1_BAD_TRADING_ADDRESS = -999
 NUMBER_OF_ARTICLES = 3
 TRADE_OPEN_HOUR = 17
@@ -37,7 +37,7 @@ class Tracking:
         if change == ERROR1_BAD_TRADING_ADDRESS:
             print("Bad trading address..")
 
-        elif change > abs(self.dramatic_change) or change < -abs(self.dramatic_change):
+        elif abs(change) > self.dramatic_change:
             articles = self.news.get_news(NUMBER_OF_ARTICLES, DRAMATIC_CHANGE_CODE)
             self.sender.send(articles, change, DRAMATIC_CHANGE_CODE)
 
