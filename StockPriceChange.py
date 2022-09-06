@@ -2,6 +2,7 @@ import calendar
 
 import requests
 from datetime import datetime, timedelta
+import holidays
 from calendar import monthrange
 
 ALPHA_ADVANTAGE_API = "OFM3P9Z6AXF7NAXX"
@@ -21,7 +22,7 @@ class StockPriceChange:
 
         # Skip off-market days of the week
         last_trading_date = datetime.today() - timedelta(days=1)
-        while last_trading_date.weekday() > 4:
+        while last_trading_date.weekday() > 4 or last_trading_date in holidays.US():
             last_trading_date -= timedelta(days=1)
 
         time_series_param = "TIME_SERIES_DAILY" # Default time series param for the API server
@@ -39,7 +40,7 @@ class StockPriceChange:
             time_series_dic_key = "Monthly Time Series"
 
         # Skip off-market days of the week
-        while compared_trading_date.weekday() > 4 or compared_trading_date.date() == last_trading_date.date():
+        while compared_trading_date.weekday() > 4 or last_trading_date in holidays.US() or compared_trading_date.date() == last_trading_date.date():
             compared_trading_date -= timedelta(days=1)
 
         parameters = {
