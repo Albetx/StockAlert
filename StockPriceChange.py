@@ -54,7 +54,6 @@ class StockPriceChange:
         data = response.json()
 
         try:
-            print(f"last_trading_date: {last_trading_date}, comp date: {compared_trading_date}")
             last_close = float (data[time_series_dic_key][last_trading_date.strftime('%Y-%m-%d')]['4. close'])
             before_last_close = float (data[time_series_dic_key][compared_trading_date.strftime('%Y-%m-%d')]['4. close'])
 
