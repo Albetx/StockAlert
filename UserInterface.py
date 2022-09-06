@@ -40,7 +40,7 @@ class UserInterface:
         add_stock_label = Label(text="Add new stock symbol: ", font=('Neue', 12, "bold"), bg=BACKGROUND_COLOR, fg="White")
         add_stock_label.grid(row=2, column=3, rowspan=2)
 
-        self.new_stock = Entry(width=17)
+        self.new_stock = Entry(width=16)
         self.new_stock.insert(END, "Type a Ticker Symbol")
         self.new_stock.grid(row=2, column=4, pady=5)
 

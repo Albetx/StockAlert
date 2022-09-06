@@ -1,4 +1,5 @@
 import smtplib
+import os
 
 my_email = "testserver.con@outlook.com"
 password = "Dovnemalim1"

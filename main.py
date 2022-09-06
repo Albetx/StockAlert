@@ -1,3 +1,4 @@
+import time
 from Tracking import *
 from TrackingInvest import *
 from TrackingTrade import *
@@ -7,6 +8,7 @@ import UserInterface as userI
 STOCK = "TSLA"
 NO_SIG_CHANGE = -999
 
+start_time = time.time()
 
 try:
     with open("tickers.txt") as tickers_list:
@@ -36,6 +38,8 @@ else:
         t1 = Tracking(ticker)
         t1.check_changes()
         t1.periodic_update()
+
+    print(f"STATUS: Total time:{time.time() - start_time}, CPU time:{time.process_time()}")
 
     userI.UserInterface(tickers_table)
 

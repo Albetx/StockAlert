@@ -1,4 +1,1 @@
-Ticker,Group
-AAPL,Invest
-GOOG,Invest
-ZIM,Trade
+Ticker,GroupAAPL,InvestGOOG,InvestZIM,TradeTSLA,TradeSEDG,Track
