@@ -11,7 +11,7 @@ The tracked stocks table stored as a csv file.
 </ul>
 <br> <br> 
 
-<b>UI: </b>
+<b>User Interface: </b>
 <br><br>
 ![UI](https://user-images.githubusercontent.com/107939270/187472421-eb0e9b16-65b9-49d8-9547-14fd9aab0846.PNG)
 <br><br>
